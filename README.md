@@ -1,2 +1,3 @@
-# Typhaon
-data validator
+# typhaon: python data validator
+
+
