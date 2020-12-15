@@ -28,7 +28,7 @@ Schemas are defined in dictionaries
 **null** - None values allowed  
 **nullable** - alias for _null_  
 **list** - list of values  
-**array** - alias for _list_
+**array** - alias for _list_  
 **enum** - one of a list of values !! enums require the set of valid values to be set in a _symbols_ list.  
 **other** - not one of the above, but a required field  
 
