@@ -1,9 +1,9 @@
-name: test_suite
+name: integration_tests
 
 on: [push, pull_request]
 
 jobs:
-  tests_suite:
+  regression_tests:
     runs-on: ubuntu-latest
     steps:
       - name: check out
@@ -22,3 +22,37 @@ jobs:
 
       - name: run test
         run: pytest 
+
+  bandit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out
+        uses: actions/checkout@v2
+  
+      - name: set up
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8' 
+          
+      - name: install 
+        run:  pip install bandit
+
+      - name: run test
+        run: bandit -r . -x /tests
+
+  mypy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out
+        uses: actions/checkout@v2
+  
+      - name: set up
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8' 
+          
+      - name: install 
+        run:  pip install mypy
+
+      - name: run test
+        run: mypy .

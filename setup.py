@@ -1,11 +1,11 @@
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages  # type:ignore
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
    name='typhaon',
-   version='1.0.0',
+   version='1.0.1',
    description='Python Data Validator',
    long_description=long_description,
    long_description_content_type="text/markdown",
