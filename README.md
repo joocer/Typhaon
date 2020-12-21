@@ -27,7 +27,7 @@ No Parameters
 
 **boolean** - binary value  
 Parameters
-  - **symbols** - (optiona) list of valid values
+  - **symbols** - (optional) list of valid values
 
 **nullable** - empty or missing value allowed  
 No Parameters
