@@ -9,7 +9,7 @@ from typhaon import Schema
 try:
     from rich import traceback
     traceback.install()
-except ImportError:
+except ImportError:   # pragma: no cover
     pass
 
 
@@ -54,6 +54,12 @@ def test_validator_invalid_string():
 def test_validator_invalid_number():
 
     TEST_DATA = { "number_field": "one hundred" }
+    TEST_SCHEMA = { "fields": [ { "name": "number_field", "type": "numeric" } ] }
+
+    test = Schema(TEST_SCHEMA)
+    assert (not test.validate(TEST_DATA))
+
+    TEST_DATA = { "number_field": print }
     TEST_SCHEMA = { "fields": [ { "name": "number_field", "type": "numeric" } ] }
 
     test = Schema(TEST_SCHEMA)
@@ -194,6 +200,54 @@ def test_validator_enum():
     assert (test.validate(VALID_TEST_DATA))
 
 
+def test_validator_date():
+
+    INVALID_TEST_DATA = {"key": "tomorrow"}
+    VALID_TEST_DATA = {"key": "2020-01-01"}
+    TEST_SCHEMA = {"fields": [{"name": "key", "type": "date"}]}
+
+    test = Schema(TEST_SCHEMA)
+    assert (not test.validate(INVALID_TEST_DATA))
+    assert (test.validate(VALID_TEST_DATA))
+
+
+def test_unknown_type():
+
+    TEST_SCHEMA = {"fields": [{"name": "key", "type": "not_a_known_type"}]}
+
+    failed = False
+    try:
+        test = Schema(TEST_SCHEMA)
+    except ValueError:
+        failed = True
+
+    assert failed
+
+
+def test_raise_exception():
+
+    TEST_DATA = { "number_field": "one hundred" }
+    TEST_SCHEMA = { "fields": [ { "name": "number_field", "type": "numeric" } ] }
+
+    test = Schema(TEST_SCHEMA)
+    failed = False
+    try:
+        test.validate(TEST_DATA, raise_exception=True)
+    except ValueError:
+        failed = True
+
+    assert failed
+
+
+def test_call_alias():
+
+    TEST_DATA = { "number_field": 100 }
+    TEST_SCHEMA = { "fields": [ { "name": "number_field", "type": "numeric" } ] }
+
+    test = Schema(TEST_SCHEMA)
+    assert test(TEST_DATA)
+
+
 def test_validator_number_ranges():
 
     OVER_TEST_DATA = {"number": 1000}
@@ -208,11 +262,13 @@ def test_validator_number_ranges():
 
     TEST_SCHEMA_MIN = {"fields": [{"name": "number", "type": "numeric", "min": 250}]}
     test = Schema(TEST_SCHEMA_MIN)
-    assert (test.validate(OVER_TEST_DATA))
+    assert (test.validate(OVER_TEST_DATA)), test.last_error
+    assert not (test.validate(UNDER_TEST_DATA)), test.last_error
 
     TEST_SCHEMA_MAX = {"fields": [{"name": "number", "type": "numeric", "max": 750}]}
     test = Schema(TEST_SCHEMA_MAX)
-    assert (test.validate(UNDER_TEST_DATA))
+    assert (test.validate(UNDER_TEST_DATA)), test.last_error
+    assert not (test.validate(OVER_TEST_DATA)), test.last_error
 
 
 def test_validator_string_format():
@@ -241,3 +297,9 @@ if __name__ == "__main__":
     test_validator_enum()
     test_validator_number_ranges()
     test_validator_string_format()
+    test_validator_date()
+    test_unknown_type()
+    test_raise_exception()
+    test_call_alias()
+
+    print('okay')

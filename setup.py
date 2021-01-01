@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
    name='typhaon',
-   version='1.0.2',
+   version='1.0.3',
    description='Python Data Validator',
    long_description=long_description,
    long_description_content_type="text/markdown",
