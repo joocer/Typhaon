@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
    name='typhaon',
-   version='1.0.3',
+   version='1.1.0',
    description='Python Data Validator',
    long_description=long_description,
    long_description_content_type="text/markdown",
@@ -13,5 +13,7 @@ setup(
    author_email='justin.joyce@joocer.com',
    packages=find_packages(),
    url="https://github.com/joocer/Typhaon",
-   install_requires=[]
+   install_requires=[
+       'ujson'
+   ]
 )
